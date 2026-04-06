@@ -1,0 +1,51 @@
+-- Create the database
+CREATE DATABASE IF NOT EXISTS rock_concert_db;
+USE rock_concert_db;
+
+-- TABLE 1: The Bands
+CREATE TABLE rock_bands (
+    band_id INT AUTO_INCREMENT PRIMARY KEY,
+    band_name VARCHAR(100) NOT NULL,
+    genre VARCHAR(50)
+);
+
+-- TABLE 2: The Venues
+CREATE TABLE venues (
+    venue_id INT AUTO_INCREMENT PRIMARY KEY,
+    venue_name VARCHAR(100) NOT NULL,
+    city VARCHAR(100),
+    max_capacity INT
+);
+
+-- TABLE 3: The Attendances (Linked to Tables 1 & 2)
+CREATE TABLE concert_attendances (
+    attendance_id INT AUTO_INCREMENT PRIMARY KEY,
+    band_id INT,
+    venue_id INT,
+    concert_date DATE,
+    tickets_sold INT,
+    ticket_price DECIMAL(8, 2),
+    -- Foreign Keys ensure we can't add a concert for a band or venue that doesn't exist
+    FOREIGN KEY (band_id) REFERENCES rock_bands(band_id) ON DELETE CASCADE,
+    FOREIGN KEY (venue_id) REFERENCES venues(venue_id) ON DELETE CASCADE
+);
+
+-- INSERT RECORDS
+INSERT INTO rock_bands (band_name, genre) VALUES 
+('Metallica', 'Thrash Metal'),
+('Foo Fighters', 'Alternative Rock'),
+('Iron Maiden', 'Heavy Metal');
+
+INSERT INTO venues (venue_name, city, max_capacity) VALUES 
+('Wembley Stadium', 'London', 90000),
+('Madison Square Garden', 'New York', 19500),
+('Tokyo Dome', 'Tokyo', 55000);
+
+INSERT INTO concert_attendances (band_id, venue_id, concert_date, tickets_sold, ticket_price) VALUES
+(1, 1, '2024-06-15', 88000, 120.00),
+(2, 2, '2024-07-20', 19500, 95.00),
+(3, 3, '2024-09-10', 54000, 85.00),
+(1, 2, '2024-10-05', 19500, 150.00);
+
+
+
